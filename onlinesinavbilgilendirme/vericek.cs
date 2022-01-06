@@ -28,16 +28,16 @@ namespace onlinesinavbilgilendirme
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var items = DataHelpers.duyurularCek();
+         /*   var items = DataHelpers.duyurularCek();
             for (int i = 1; i <= items.Count; i++)
             {
                 listBox1.Items.Add(items[i]);
-            }
+            }*/
         }
 
         public void vericekilen(string Url, string XPath, ListBox cekilenveri)
         {
-            try
+          /*  try
             {
                 url = new Uri(Url);
                 var veri = DataHelpers.duyuruCek(Url, XPath);
@@ -49,7 +49,7 @@ namespace onlinesinavbilgilendirme
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
+            }*/
         }
 
         private void button2_Click(object sender, EventArgs e)

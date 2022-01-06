@@ -6,13 +6,16 @@ namespace onlinesinavbilgilendirme.arkaplan
     {
         static void Main(string[] args)
         {
+            
+
             var shouldContinue = true;
             do
             {
                 //Insert to DB if not exist
-                DataHelpers.duyurucekdzce();
+                DataHelpers.DuyuruCekDuzce();
+                DataHelpers.DuyuruCekAnadolu();
+                DataHelpers.DuyuruCekOsym();
 
-                DataHelpers.duyurulariKaydet();
                 System.Threading.Thread.Sleep(5 * 60 * 1000);
             } while (shouldContinue);
         }

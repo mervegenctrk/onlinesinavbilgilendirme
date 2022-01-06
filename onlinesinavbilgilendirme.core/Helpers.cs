@@ -5,127 +5,255 @@ using System.Data.SqlClient;
 using System.Net;
 using System.Text;
 using System.Linq;
+using onlinesinavbilgilendirme.core.Model;
+using HtmlAgilityPack;
+using onlinesinavbilgilendirme.core;
+using Microsoft.EntityFrameworkCore;
 
 namespace onlinesinavbilgilendirme
 {
+
     public static class DataHelpers
     {
-        public static string duyuruCek(string Url, string XPath)
-        {
-            if (string.IsNullOrEmpty(Url))
-                throw new InvalidOperationException("Url is invalid");
+       static ContextDb contextDb = new ContextDb();
+       static List<User> users = contextDb.Users.ToList();
 
-            Uri url = new Uri(Url);
-            WebClient client = new WebClient();
-            string html = "";
-            client.Encoding = Encoding.UTF8;
-            html = client.DownloadString(url);
-
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(html);
-            return doc.DocumentNode.SelectSingleNode(XPath).InnerText;
-        }
-        public static List<string> duyurularCek()
+        public static HtmlDocument GetHtmlData(string Url)
         {
-            var list = new List<string>();
-            for (int i = 1; i <= 29; i++)
-            {
-                var veri = duyuruCek("https://www.anadolu.edu.tr/acikogretim/aof-duyurular", "//*[@id='page']/div/div[3]/div[2]/aside[1]/aside/section/div/ul/li[" + i + "]");
-                list.Add(veri.Trim());
-            }
-            return list;
+            string[] result = new string[] { };
+            WebClient webClient = new WebClient();
+            string page = webClient.DownloadString(Url);
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(page);
+            return doc;
         }
 
-        public static List<string> duyurucekdzce()
+        public static void DuyuruCekDuzce()
         {
-            var list1 = new List<string>();
-            for (int y = 1; y <= 2; y++)
+            var duzceUrl = "https://duzce.edu.tr/akademik/fakulte/mf/bm/duyurular";
+
+            List<DuzceDuyuru> duzceDuyuru = new List<DuzceDuyuru>();
+            EmailSender emailSender = new EmailSender();
+            bool duyuruDurum = false;
+
+            foreach (HtmlNode table in GetHtmlData(duzceUrl).DocumentNode.SelectNodes("//*[@class=\"row\"]"))
             {
-                var veri = duyuruCek("https://duzce.edu.tr/akademik/fakulte/mf/bm/duyurular", "/html/body/main/section[2]/div/div/div[2]/div[1]/div[" + y + "]/a");
-
-                list1.Add(veri.Trim());
-            }
-            return list1;
-        }
-        public static List<string> duyurucekdzce1()
-        {
-            var list2 = new List<string>();
-            for (int x = 1; x <= 2; x++)
-            {
-                var veri = duyuruCek("https://duzce.edu.tr/akademik/fakulte/mf/bm/duyurular", "/html/body/main/section[2]/div/div/div[2]/div[2]/div[" + x + "]/div[2]/a");
-                list2.Add(veri.Trim());
-            }
-            return list2;
-        }
-
-
-
-        public static void duyurulariKaydet()
-        {
-            //var connection = "";
-            SqlConnection connection = new SqlConnection(@"Data Source=DESKTOP-O7FCNJ8; Initial Catalog=onlinesinav; Integrated Security=TRUE ");
-
-            var ca = new SqlDataAdapter("Select * from duyurular", connection);
-            DataTable tablo = new DataTable();
-            ca.Fill(tablo);
-
-            var tableResult = tablo.AsEnumerable().Select(r => r.Field<string>("duyuru"));
-            var icerdekiDuyurular = new List<string>();
-            foreach(var item in tableResult)
-            {
-                icerdekiDuyurular.Add(item.ToString());
-            }
-
-            var list = duyurularCek();
-            foreach (var item in list)
-            {
-                if (!icerdekiDuyurular.Any(z => z.Trim().ToUpper() == item.Trim().ToUpper()))//does not exist
+                foreach (HtmlNode row in table.SelectNodes("div"))
                 {
-                    var ca2 = new SqlCommand($"INSERT INTO duyurular (duyuru) VALUES ('{item}')", connection);
-                    connection.Open();
-                    ca2.ExecuteReader();
+                    if (row.SelectNodes("div/a") != null)
+                    {
+                        foreach (HtmlNode cell in row.SelectNodes("div/a"))
+                        {
+                            var duyuru = cell.InnerText.TrimStart().Replace("\r", "").Replace("\n", "").TrimEnd();
 
 
-                    // foreach of all onluusernames email adresleri
-                //    foreach (var item in collection)
-                //    {
-                //        mailsend("mailcontent", customeremail);
-                //    }
+                            var duyurular = contextDb.DuzceDuyurular.ToList();
+
+                            var checkExist = duyurular.FirstOrDefault(x => x.Description == duyuru);
+
+                            if (checkExist != null)
+                                continue;
+
+                            contextDb.Add(new DuzceDuyuru()
+                            {
+                                Description = duyuru
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foreach (HtmlNode row2 in row.SelectNodes("div"))
+                        {
+                            foreach (HtmlNode cell in row2.SelectNodes("div/a"))
+                            {
+                                var duyuru = cell.InnerText.TrimStart().Replace("\r", "").Replace("\n", "").TrimEnd();
+
+
+                                var duyurular = contextDb.DuzceDuyurular.ToList();
+
+                                var checkExist = duyurular.FirstOrDefault(x => x.Description == duyuru);
+
+                                if (checkExist != null)
+                                    continue;
+
+
+                                duzceDuyuru.Add(new DuzceDuyuru()
+                                {
+                                    Description = duyuru
+                                });
+                                contextDb.Add(new DuzceDuyuru()
+                                {
+                                    Description = duyuru
+                                });
+                                duyuruDurum = true;                                
+                            }
+                        }
+                    }
+
+
+                }
+                if (duyuruDurum == true)
+                {
+                    contextDb.SaveChanges();
+
+                    string body = "";
+                    int count = 0;
+                    foreach (var item in duzceDuyuru)
+                    {
+                        count++;
+                        body += count.ToString() + "- " + item.Description + "<br>";
+                    }
+
+                    foreach (var user in users)
+                    {
+                        if (user.MailDurum == true)
+                        {
+                            emailSender.SendEmail(new Email()
+                            {
+                                Body = body,
+                                Subject = "Düzce Üniversitesi Yeni Duyuru",
+                                UserEmail = user.Email
+                            });
+                        }
+                    }
+
                 }
             }
 
         }
-      //public static  bool mailsend(string emailcontent,string toemail)
-      //  {
-      //      bool issend = false;
 
-      //      SmtpClient client = new SmtpClient();
-      //      MailMessage msg = new MailMessage();
+        public static void DuyuruCekAnadolu()
+        {
+            var anadoluUrl = "https://www.anadolu.edu.tr/acikogretim/aof-duyurular";
 
-      //      client.Credentials = new NetworkCredential("merve_akinci13@hotmail.com", "mervem2525");
-      //      client.Port = 587;
-      //      client.Host = "smtp.live.com";
-      //      client.EnableSsl = true;
-
-      //      msg.To.Add(toemail);
-      //      msg.From = new MailAddress("merve_akinci13@hotmail.com", "Sınav duyuru Bilgilendirme");
-      //      msg.Subject = "Sınav duyuru Bilgilendirme";
-      //      msg.Body = "<html>" +
-      //      "<body>" + "<p>Anadolu üniversitesi açıköğretim duyuruları eklenmiştir.</p>" +
-      //      "<p><a href=https://www.anadolu.edu.tr/acikogretim/aof-duyurular >Duyuruları görüntülemek için tıklayınız !</p>"
-      //      + "</body>" +
-      //      "</html>";
-      //      msg.IsBodyHtml = true;
-      //      client.Send(msg);
+            List<AnadoluDuyuru> anadoluDuyuru = new List<AnadoluDuyuru>();
+            EmailSender emailSender = new EmailSender();
+            bool duyuruDurum = false;
 
 
+            foreach (HtmlNode table in GetHtmlData(anadoluUrl).DocumentNode.SelectNodes("//*[@class=\"list\"]"))
+            {
+                foreach (HtmlNode row in table.SelectNodes("ul"))
+                {
+                    foreach (HtmlNode cell in row.SelectNodes("li"))
+                    {
+                        var duyuru = cell.InnerText.TrimStart().Replace("\r", "").Replace("\n", "").TrimEnd();
 
 
-      //      return issend;
+                        var duyurular = contextDb.AnadoluDuyurular.ToList();
+
+                        var checkExist = duyurular.FirstOrDefault(x => x.Description == duyuru);
+
+                        if (checkExist != null)
+                            continue;
 
 
+                        anadoluDuyuru.Add(new AnadoluDuyuru()
+                        {
+                            Description = duyuru
+                        });
+                        contextDb.Add(new AnadoluDuyuru()
+                        {
+                            Description = duyuru
+                        });
+                        duyuruDurum = true;                  
+                    }
 
-      //  }
+                }
+                if (duyuruDurum == true)
+                {
+                    contextDb.SaveChanges();
+
+                    string body = "";
+                    int count = 0;
+                    foreach (var item in anadoluDuyuru)
+                    {
+                        count++;
+                        body += count.ToString() + "- " + item.Description + "<br>";
+                    }
+
+                    foreach (var user in users)
+                    {
+                        if (user.MailDurum == true)
+                        {
+                            emailSender.SendEmail(new Email()
+                            {
+                                Body = body,
+                                Subject = "Anadolu Üniversitesi Yeni Duyuru",
+                                UserEmail = user.Email
+                            });
+                        }
+                    }
+
+                }
+            }
+
+        }
+        public static void DuyuruCekOsym()
+        {
+            List<OsymDuyuru> osymDuyuru = new List<OsymDuyuru>();
+            EmailSender emailSender = new EmailSender();
+            bool duyuruDurum = false;
+
+            var osymUrl = "https://www.osym.gov.tr/TR,20810/2021.html";
+
+            foreach (HtmlNode table in GetHtmlData(osymUrl).DocumentNode.SelectNodes("//*[@id=\"list\"]"))
+            {
+                foreach (HtmlNode row in table.SelectNodes("tr"))
+                {
+                    foreach (HtmlNode cell in row.SelectNodes("th|td"))
+                    {
+                        var duyuru = cell.InnerText.TrimStart().Replace("\r", "").Replace("\n", "").TrimEnd();
+
+
+                        var duyurular = contextDb.OsymDuyurular.ToList();
+
+                        var checkExist = duyurular.FirstOrDefault(x => x.Description == duyuru);
+
+                        if (checkExist != null)
+                            continue;
+
+                        osymDuyuru.Add(new OsymDuyuru() 
+                        { 
+                            Description = duyuru
+                        });
+                        contextDb.Add(new OsymDuyuru()
+                        {
+                            Description = duyuru
+                        });
+                        duyuruDurum = true;
+                    }
+
+                }
+                if(duyuruDurum == true)
+                {
+                    contextDb.SaveChanges();
+
+                    string body = "";
+                    int count = 0;
+                    foreach (var item in osymDuyuru)
+                    {
+                        count++;
+                        body += count.ToString() + "- " + item.Description  + "<br>";
+                    }
+
+                    foreach (var user in users)
+                    {
+                        if(user.MailDurum == true)
+                        {
+                            emailSender.SendEmail(new Email()
+                            {
+                                Body = body,
+                                Subject = "Osym Yeni Duyuru",
+                                UserEmail = user.Email
+                            });
+                        }
+                    }
+                    
+                }
+            }
+
+        }
 
     }
 }

@@ -6,12 +6,12 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using onlinesinavbilgilendirme.core.Model;
 
 namespace onlinesinavbilgilendirme
 {
     public partial class Form2 : Form
     {
-        SqlConnection connection = Form1.connection;
         
         public Form2()
         {
@@ -24,100 +24,84 @@ namespace onlinesinavbilgilendirme
 
         private void nametext_MouseEnter(object sender, EventArgs e)
         {
-            if (nametext.Text == "Username")
+            if (username.Text == "Username")
             {
-                nametext.Text = "";
-                nametext.ForeColor = Color.Black;
+                username.Text = "";
+                username.ForeColor = Color.Black;
             }
         }
 
         private void nametext_MouseLeave(object sender, EventArgs e)
         {
-            if (nametext.Text == "")
+            if (username.Text == "")
             {
-                nametext.Text = "Username";
-                nametext.ForeColor = Color.Silver;
+                username.Text = "Username";
+                username.ForeColor = Color.Silver;
             }
         }
 
         private void textBox1_MouseEnter(object sender, EventArgs e)
         {
             
-            if (textBox1.Text == "Password")
+            if (password.Text == "Password")
             {
-                textBox1.Text = "";
-                textBox1.ForeColor = Color.Black;
-                textBox1.PasswordChar = '*';
+                password.Text = "";
+                password.ForeColor = Color.Black;
+                password.PasswordChar = '*';
             }
         }
 
         private void textBox1_MouseLeave(object sender, EventArgs e)
         {
             char? none = null;
-            if (textBox1.Text == "")
+            if (password.Text == "")
             {
-                textBox1.Text = "Password";
-                textBox1.ForeColor = Color.Silver;
-                textBox1.PasswordChar = Convert.ToChar(none);
+                password.Text = "Password";
+                password.ForeColor = Color.Silver;
+                password.PasswordChar = Convert.ToChar(none);
             }
         }
 
         private void textBox2_MouseEnter(object sender, EventArgs e)
         {
-            if (textBox2.Text == "Re_Password")
+            if (rePassword.Text == "Re_Password")
             {
-                textBox2.Text = "";
-                textBox2.ForeColor = Color.Black;
-                textBox2.PasswordChar = '*';
+                rePassword.Text = "";
+                rePassword.ForeColor = Color.Black;
+                rePassword.PasswordChar = '*';
             }
         }
 
         private void textBox2_MouseLeave(object sender, EventArgs e)
         {
             char? none = null;
-            if (textBox2.Text == "")
+            if (rePassword.Text == "")
             {
-                textBox2.Text = "Re_Password";
-                textBox2.ForeColor = Color.Silver;
-                textBox2.PasswordChar = Convert.ToChar(none);
+                rePassword.Text = "Re_Password";
+                rePassword.ForeColor = Color.Silver;
+                rePassword.PasswordChar = Convert.ToChar(none);
             }
         }
 
         private void textBox3_MouseEnter(object sender, EventArgs e)
         {
-            if (textBox3.Text == "Email")
+            if (email.Text == "Email")
             {
-                textBox3.Text = "";
-                textBox3.ForeColor = Color.Black;
+                email.Text = "";
+                email.ForeColor = Color.Black;
             }
         }
 
         private void textBox3_MouseLeave(object sender, EventArgs e)
         {
-            if (textBox3.Text == "")
+            if (email.Text == "")
             {
-                textBox3.Text = "Email";
-                textBox3.ForeColor = Color.Silver;
+                email.Text = "Email";
+                email.ForeColor = Color.Silver;
             }
         }
 
-        private void textBox4_MouseEnter(object sender, EventArgs e)
-        {
-            if (textBox4.Text == "Phone Number")
-            {
-                textBox4.Text = "";
-                textBox4.ForeColor = Color.Black;
-            }
-        }
 
-        private void textBox4_MouseLeave(object sender, EventArgs e)
-        {
-            if (textBox4.Text == "")
-            {
-                textBox4.Text = "Phone Number";
-                textBox4.ForeColor = Color.Silver;
-            }
-        }
         bool move;
         int mouse_x;
         int mouse_y;
@@ -144,19 +128,34 @@ namespace onlinesinavbilgilendirme
 
         private void kayitbutton_Click(object sender, EventArgs e)
         {
-            connection.Open();
-            SqlCommand command = new SqlCommand("Insert into onlusername(username,pass,re_pass,email,phone_number,active) values ('"+cryptology.Encryption(nametext.Text,2)+ "','" +cryptology.Encryption(textBox1.Text,2) + "','" +cryptology.Encryption(textBox2.Text,2) + "','" +cryptology.Encryption(textBox3.Text,2) + "','" +cryptology.Encryption(textBox4.Text,2) + "','"+checkBox1.Checked.ToString()+"')",connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            MessageBox.Show("Kayıt Başarılı ","Program");
+            if(password.Text == rePassword.Text)
+            {
+                try
+                {
+                    ContextDb contextDb = new ContextDb();
 
-            this.Hide();
-            Form1 form1 = new Form1();
-            form1.Show();
-        }
-
-        private void textBox5_MouseEnter(object sender, EventArgs e)
-        {
+                    contextDb.Add(new User()
+                    {
+                        Email = email.Text,
+                        MailDurum = mailDurum.Checked,
+                        Password = password.Text,
+                        Username = username.Text
+                    });
+                    contextDb.SaveChanges();
+                    MessageBox.Show("Kayıt Başarılı ", "Program");
+                    this.Hide();
+                    Form1 form1 = new Form1();
+                    form1.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Program");
+                }              
+            }
+            else
+            {
+                MessageBox.Show("Şifreler eşleşmiyor ", "Program");
+            }
 
         }
 

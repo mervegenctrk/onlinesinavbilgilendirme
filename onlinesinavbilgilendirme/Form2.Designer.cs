@@ -31,14 +31,13 @@ namespace onlinesinavbilgilendirme
         {
             this.label1 = new System.Windows.Forms.Label();
             this.kayitbutton = new System.Windows.Forms.Button();
-            this.nametext = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.username = new System.Windows.Forms.TextBox();
+            this.password = new System.Windows.Forms.TextBox();
+            this.rePassword = new System.Windows.Forms.TextBox();
+            this.email = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.mailDurum = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -47,89 +46,83 @@ namespace onlinesinavbilgilendirme
             this.label1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label1.Location = new System.Drawing.Point(50, 45);
+            this.label1.Location = new System.Drawing.Point(57, 60);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(360, 23);
+            this.label1.Size = new System.Drawing.Size(460, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Kayıt olmak için aşağıdaki bilgileri doldurunuz!";
             // 
             // kayitbutton
             // 
             this.kayitbutton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.kayitbutton.Location = new System.Drawing.Point(354, 308);
+            this.kayitbutton.Location = new System.Drawing.Point(405, 411);
+            this.kayitbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.kayitbutton.Name = "kayitbutton";
-            this.kayitbutton.Size = new System.Drawing.Size(83, 33);
+            this.kayitbutton.Size = new System.Drawing.Size(95, 44);
             this.kayitbutton.TabIndex = 1;
             this.kayitbutton.Text = "Kayıt Ol";
             this.kayitbutton.UseVisualStyleBackColor = true;
             this.kayitbutton.Click += new System.EventHandler(this.kayitbutton_Click);
             // 
-            // nametext
+            // username
             // 
-            this.nametext.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.nametext.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.nametext.Location = new System.Drawing.Point(125, 90);
-            this.nametext.Name = "nametext";
-            this.nametext.Size = new System.Drawing.Size(211, 27);
-            this.nametext.TabIndex = 3;
-            this.nametext.Text = "Username";
-            this.nametext.MouseEnter += new System.EventHandler(this.nametext_MouseEnter);
-            this.nametext.MouseLeave += new System.EventHandler(this.nametext_MouseLeave);
+            this.username.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.username.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.username.Location = new System.Drawing.Point(143, 120);
+            this.username.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(241, 32);
+            this.username.TabIndex = 3;
+            this.username.Text = "Username";
+            this.username.MouseEnter += new System.EventHandler(this.nametext_MouseEnter);
+            this.username.MouseLeave += new System.EventHandler(this.nametext_MouseLeave);
             // 
-            // textBox1
+            // password
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(125, 123);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(211, 27);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "Password";
-            this.textBox1.MouseEnter += new System.EventHandler(this.textBox1_MouseEnter);
-            this.textBox1.MouseLeave += new System.EventHandler(this.textBox1_MouseLeave);
+            this.password.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.password.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.password.Location = new System.Drawing.Point(143, 164);
+            this.password.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.password.Name = "password";
+            this.password.Size = new System.Drawing.Size(241, 32);
+            this.password.TabIndex = 4;
+            this.password.Text = "Password";
+            this.password.MouseEnter += new System.EventHandler(this.textBox1_MouseEnter);
+            this.password.MouseLeave += new System.EventHandler(this.textBox1_MouseLeave);
             // 
-            // textBox2
+            // rePassword
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.textBox2.Location = new System.Drawing.Point(125, 156);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(211, 27);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "Re_Password";
-            this.textBox2.MouseEnter += new System.EventHandler(this.textBox2_MouseEnter);
-            this.textBox2.MouseLeave += new System.EventHandler(this.textBox2_MouseLeave);
+            this.rePassword.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.rePassword.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.rePassword.Location = new System.Drawing.Point(143, 208);
+            this.rePassword.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.rePassword.Name = "rePassword";
+            this.rePassword.Size = new System.Drawing.Size(241, 32);
+            this.rePassword.TabIndex = 5;
+            this.rePassword.Text = "Re_Password";
+            this.rePassword.MouseEnter += new System.EventHandler(this.textBox2_MouseEnter);
+            this.rePassword.MouseLeave += new System.EventHandler(this.textBox2_MouseLeave);
             // 
-            // textBox3
+            // email
             // 
-            this.textBox3.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.textBox3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.textBox3.Location = new System.Drawing.Point(125, 189);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(211, 27);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.Text = "Email";
-            this.textBox3.MouseEnter += new System.EventHandler(this.textBox3_MouseEnter);
-            this.textBox3.MouseLeave += new System.EventHandler(this.textBox3_MouseLeave);
-            // 
-            // textBox4
-            // 
-            this.textBox4.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.textBox4.Location = new System.Drawing.Point(125, 222);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(211, 27);
-            this.textBox4.TabIndex = 7;
-            this.textBox4.Text = "Phone Number";
-            this.textBox4.MouseEnter += new System.EventHandler(this.textBox4_MouseEnter);
-            this.textBox4.MouseLeave += new System.EventHandler(this.textBox4_MouseLeave);
+            this.email.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.email.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.email.Location = new System.Drawing.Point(143, 252);
+            this.email.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.email.Name = "email";
+            this.email.Size = new System.Drawing.Size(241, 32);
+            this.email.TabIndex = 6;
+            this.email.Text = "Email";
+            this.email.MouseEnter += new System.EventHandler(this.textBox3_MouseEnter);
+            this.email.MouseLeave += new System.EventHandler(this.textBox3_MouseLeave);
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(219, 308);
+            this.button1.Location = new System.Drawing.Point(250, 411);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 33);
+            this.button1.Size = new System.Drawing.Size(103, 44);
             this.button1.TabIndex = 8;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = true;
@@ -140,44 +133,46 @@ namespace onlinesinavbilgilendirme
             this.button2.BackgroundImage = global::onlinesinavbilgilendirme.Properties.Resources.carpi_isareti_kopyala;
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.Location = new System.Drawing.Point(433, 2);
+            this.button2.Location = new System.Drawing.Point(495, 3);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(34, 34);
+            this.button2.Size = new System.Drawing.Size(39, 45);
             this.button2.TabIndex = 11;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // checkBox1
+            // mailDurum
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.checkBox1.Location = new System.Drawing.Point(28, 270);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(409, 21);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Yeni sınav duyurularının mailinize gelmesini istiyosanız, lütfen seçiniz.";
-            this.checkBox1.UseVisualStyleBackColor = false;
+            this.mailDurum.AutoSize = true;
+            this.mailDurum.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.mailDurum.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.mailDurum.Location = new System.Drawing.Point(12, 312);
+            this.mailDurum.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.mailDurum.Name = "mailDurum";
+            this.mailDurum.Size = new System.Drawing.Size(542, 27);
+            this.mailDurum.TabIndex = 12;
+            this.mailDurum.Text = "Yeni sınav duyurularının mailinize gelmesini istiyosanız, lütfen seçiniz.";
+            this.mailDurum.UseVisualStyleBackColor = false;
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.BackgroundImage = global::onlinesinavbilgilendirme.Properties.Resources.images;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(469, 371);
-            this.Controls.Add(this.checkBox1);
+            this.ClientSize = new System.Drawing.Size(580, 495);
+            this.Controls.Add(this.mailDurum);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.nametext);
+            this.Controls.Add(this.email);
+            this.Controls.Add(this.rePassword);
+            this.Controls.Add(this.password);
+            this.Controls.Add(this.username);
             this.Controls.Add(this.kayitbutton);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form2";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseMove);
@@ -191,13 +186,12 @@ namespace onlinesinavbilgilendirme
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button kayitbutton;
-        private System.Windows.Forms.TextBox nametext;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox username;
+        private System.Windows.Forms.TextBox password;
+        private System.Windows.Forms.TextBox rePassword;
+        private System.Windows.Forms.TextBox email;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox mailDurum;
     }
 }
